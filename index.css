@@ -13,6 +13,13 @@ a:hover {
   color: inherit;
 }
 
-.theme{
-    color:#079090 !important;
+.theme {
+  color: #079090 !important;
+}
+
+li a {
+  margin-left: 20px;
+}
+nav a {
+  margin-left: 20px;
 }
