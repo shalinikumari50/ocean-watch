@@ -57,19 +57,39 @@
             </div>
             <div class="col-md-2 my-auto">
                 <div class="vertical-menu my-auto">
-                    <a href="#" class="active">None</a>
-                    <a href="#">PH</a>
-                    <a href="#">TDS</a>
-                    <a href="#">Water Temperature</a>
-                    <a href="#">Air Temperature</a>
-                    <a href="#">Humidity</a>
-                    <a href="#">Water Level</a>
-                    <a href="#">Dissolved Oxygen</a>
+                    <a href="#" class="verticalTab active" onclick="becomeActive(event)">None</a>
+                    <a href="#" class="verticalTab" onclick="becomeActive(event)">PH</a>
+                    <a href="#" class="verticalTab" onclick="becomeActive(event)">TDS</a>
+                    <a href="#" class="verticalTab" onclick="becomeActive(event)">Water Temperature</a>
+                    <a href="#" class="verticalTab" onclick="becomeActive(event)">Air Temperature</a>
+                    <a href="#" class="verticalTab" onclick="becomeActive(event)">Humidity</a>
+                    <a href="#" class="verticalTab" onclick="becomeActive(event)">Water Level</a>
+                    <a href="#" class="verticalTab" onclick="becomeActive(event)">Dissolved Oxygen</a>
 
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function becomeActive(evt) {
+
+
+            var i, tablinks;
+
+
+
+
+            tablinks = document.getElementsByClassName("verticalTab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+
+            evt.currentTarget.className += " active";
+
+        }
+    </script>
 </body>
 
 </html>
