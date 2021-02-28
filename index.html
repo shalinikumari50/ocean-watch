@@ -17,9 +17,112 @@
 
         }
     </style>
+    <style>
+        .state{
+            fill: none;
+            stroke: #a9a9a9;
+            stroke-width: 1;
+        }
+        .state:hover{
+            fill-opacity:0.5;
+        }
+        #tooltip {   
+            position: absolute;           
+            text-align: center;
+            padding: 20px;             
+            margin: 10px;
+            font: 12px sans-serif;        
+            background: lightsteelblue;   
+            border: 1px;      
+            border-radius: 2px;           
+            pointer-events: none;         
+        }
+        #tooltip h4{
+            margin:0;
+            font-size:14px;
+        }
+        #tooltip{
+            background:rgba(0,0,0,0.9);
+            border:1px solid grey;
+            border-radius:5px;
+            font-size:12px;
+            width:auto;
+            padding:4px;
+            color:white;
+            opacity:0;
+        }
+        #tooltip table{
+            table-layout:fixed;
+        }
+        #tooltip tr td{
+            padding:0;
+            margin:0;
+        }
+        #tooltip tr td:nth-child(1){
+            width:50px;
+        }
+        #tooltip tr td:nth-child(2){
+            text-align:center;
+        }
+    </style>
+    <script src="./index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <style>
+	.state{
+		fill: none;
+		stroke: #a9a9a9;
+		stroke-width: 1;
+	}
+	.state:hover{
+		fill-opacity:0.5;
+	}
+	#tooltip {   
+		position: absolute;           
+		text-align: center;
+		padding: 20px;             
+		margin: 10px;
+		font: 12px sans-serif;        
+		background: lightsteelblue;   
+		border: 1px;      
+		border-radius: 2px;           
+		pointer-events: none;         
+	}
+	#tooltip h4{
+		margin:0;
+		font-size:14px;
+	}
+	#tooltip{
+		background:rgba(0,0,0,0.9);
+		border:1px solid grey;
+		border-radius:5px;
+		font-size:12px;
+		width:auto;
+		padding:4px;
+		color:white;
+		opacity:0;
+	}
+	#tooltip table{
+		table-layout:fixed;
+	}
+	#tooltip tr td{
+		padding:0;
+		margin:0;
+	}
+	#tooltip tr td:nth-child(1){
+		width:50px;
+	}
+	#tooltip tr td:nth-child(2){
+		text-align:center;
+	}
+</style>
+
+
 </head>
 
 <body>
+   
+
+
     <nav class="navbar navbar-expand-lg navbar-dark" style=" background-color: black;">
         <a class="navbar-brand p-0" href="#">
             <img src="./img/logo.png" height=50px alt="" loading="lazy">
@@ -52,7 +155,8 @@
             </div>
             <div class="col-md-8">
                 <div class="map">
-                    <img src="./img/map.PNG" width="100%" alt="">
+                    <div id="tooltip"></div><!-- div to hold tooltip. -->
+                    <svg width="960" height="600" id="statesvg"></svg> <!-- svg to hold the map. -->
                 </div>
             </div>
             <div class="col-md-2 my-auto">
@@ -68,6 +172,8 @@
 
                 </div>
             </div>
+        </div>
+        <div id="chart">
         </div>
     </div>
 
@@ -90,6 +196,80 @@
 
         }
     </script>
+  <script>
+      var options = {
+  chart: {
+    type: 'line'
+  },
+  series: [{
+    name: 'Air Temperature',
+    data: [30,40,45,50,49,60,70,91,125]
+  },
+  {
+    name: 'Air Humidity',
+    data: [30,40,45,50,49,60,70,91,125]
+  },
+  {
+    name: 'Water Temperature',
+    data: [30,40,15,50,49,60,70,91,125]
+  },
+  {
+    name: 'pH',
+    data: [5,5,6,5.5,6,3,7,6,7.6,6.5,4]
+  },
+  {
+    name: 'Turbidity',
+    data: [30,40,45,50,49,60,70,91,125]
+  },
+  {
+    name: 'Total Dissolved Solids',
+    data: [30,40,45,50,49,60,70,91,125]
+  },
+  {
+    name: 'Water Level',
+    data: [30,40,45,50,49,60,70,91,125]
+  }],
+  xaxis: {
+    categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+  }
+}
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+chart.render();
+  </script>
+ <script src="https://d3js.org/d3.v3.min.js"></script>
+ <script src="uStates.js"></script>
+
+<script>
+
+	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
+		return "<h4>"+n+"</h4><table>"+
+			"<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
+			"<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
+			"<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
+			"</table>";
+	}
+	
+	var sampleData ={};	/* Sample random data. */	
+	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
+	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
+	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN", 
+	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
+		.forEach(function(d){ 
+			var low=Math.round(100*Math.random()), 
+				mid=Math.round(100*Math.random()), 
+				high=Math.round(100*Math.random());
+			sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]), 
+					avg:Math.round((low+mid+high)/3), color:d3.interpolate("green", "#800026")(low/100)}; 
+		});
+	
+	/* draw states on id #statesvg */	
+	uStates.draw("#statesvg", sampleData, tooltipHtml);
+	
+	d3.select(self.frameElement).style("height", "600px"); 
+</script>
 </body>
 
 </html>
